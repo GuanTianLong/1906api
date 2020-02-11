@@ -20,5 +20,5 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
-/**测试路由*/
+/**测试Redis路由*/
 Route::get('/test/redis','TestController@testRedis');
