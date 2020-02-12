@@ -20,5 +20,8 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
-/**测试Redis路由*/
-Route::get('/test/redis','TestController@testRedis');
+/**测试路由分组*/
+Route::prefix('/test')->group(function () {
+    Route::get('/redis','TestController@testRedis');
+    Route::get('/test001','TestController@test001');
+});
