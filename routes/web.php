@@ -25,3 +25,11 @@ Route::prefix('/test')->group(function () {
     Route::get('/redis','TestController@testRedis');
     Route::get('/test001','TestController@test001');
 });
+
+/**API路由分组*/
+Route::prefix('/api')->group(function(){
+    //获取用户信息
+    Route::get('/user/info','Api\UserController@userInfo');
+    //用户注册
+    Route::post('/user/register','Api\UserController@register');
+});
