@@ -24,6 +24,14 @@ Route::get('/phpinfo', function () {
 Route::prefix('/test')->group(function () {
     Route::get('/redis','TestController@testRedis');
     Route::get('/test001','TestController@test001');
+    //使用file_get_contents  发起GET请求
+    Route::get('/wx/token','TestController@getAccessToken');
+    //使用curl发起GET请求
+    Route::get('/curl/curlGet','TestController@curlGet');
+    //使用curl发起POST请求
+    Route::get('/curl/curlPost','TestController@curlPost');
+    //使用guzzle发起GET请求
+    Route::get('/guzzle/guzzleGet','TestController@guzzleGet');
 });
 
 /**API路由分组*/
