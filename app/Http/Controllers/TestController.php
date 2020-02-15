@@ -62,6 +62,9 @@ class TestController extends Controller
         //执行会话
         $response = curl_exec($ch);
 
+        //数据处理
+        var_dump($response);
+
         //捕获错误
         $errno = curl_errno($ch);
         $error = curl_error($ch);
@@ -73,10 +76,6 @@ class TestController extends Controller
 
         //关闭会话
         curl_close($ch);
-
-        //数据处理
-        echo "服务器响应的数据：";echo "<br>";
-        echo $response;
 
     }
 
@@ -114,6 +113,9 @@ class TestController extends Controller
         //执行curl会话
         $response = curl_exec($ch);
 
+        //数据处理
+        var_dump($response);
+
         //捕获错误
         $errno = curl_errno($ch);
         $error = curl_error($ch);
@@ -125,13 +127,6 @@ class TestController extends Controller
 
         //关闭会话
         curl_close($ch);
-
-        //数据处理
-        echo "服务器响应的数据：";echo "<br>";
-        echo $response;
-
-
-
     }
 
     /**
@@ -151,4 +146,100 @@ class TestController extends Controller
         $data = $response->getBody();
         echo $data;
     }
+
+    /**
+        *处理GET请求的接口
+     */
+    public function get1(){
+        echo "<pre>";print_r($_GET);echo "</pre>";
+    }
+
+    /**
+        *处理POST请求的接口(form-data传参)
+     */
+    public function post1(){
+        echo "<hr>";
+        echo "我是API的开始";
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
+    /**
+        *处理POST请求的接口(x-www-form-urlencoded传参)
+     */
+    public function post2(){
+        echo "<hr>";
+        echo "我是API的开始";
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
+    /**
+        *处理POST请求的接口(raw传参--发送json字符串，发送XML字符串)
+     */
+    public function post3(){
+        echo "<hr>";
+        echo "我是API的开始";
+        //接收json或XML字符串
+        $json = file_get_contents("php://input");
+        //将接收的json数据转化为数组
+        $arr = json_decode($json,true);
+        echo "<pre>";print_r($arr);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
+    /**
+        *处理POST请求的接口(上传文件)
+     */
+    public function testUpload(){
+        echo "<hr>";
+        echo "用户信息是:";
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        echo "<hr>";
+        echo "上传的文件是：";echo "<br>";
+        echo "<pre>";print_r($_FILES);echo "</pre>";
+        echo "<hr>";
+    }
+
+    /**
+        *处理Guzzle请求的接口传过来的数据(GET方式)
+     */
+    public function guzzleGet1(){
+        echo "<hr>";
+        echo "我是API的开始";echo "<br>";
+        echo "接收的数据：";echo "<br>";
+        echo "<pre>";print_r($_GET);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
+    /**
+        *处理Guzzle请求的接口传过来的数据(POST方式)
+     */
+    public function guzzlePost1(){
+        echo "<hr>";
+        echo "我是API的开始";echo "<br>";
+        echo "接收的数据：";echo "<br>";
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
+    /**
+        *处理Guzzle请求的接口传过来的数据(POST方式------>文件上传)
+     */
+    public function guzzleUpload(){
+        echo "<hr>";
+        echo "我是API的开始";echo "<br>";
+        echo "接收的数据是：";echo "<br>";
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        echo "上传的文件是：";echo "<br>";
+        echo "<pre>";print_r($_FILES);echo "</pre>";
+        echo "我是API的结束";
+        echo "<hr>";
+    }
+
 }
