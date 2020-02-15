@@ -155,7 +155,7 @@ class TestController extends Controller
     }
 
     /**
-        *处理POST请求的接口(form-data传参)
+        *处理curl---POST请求的接口(form-data传参)
      */
     public function post1(){
         echo "<hr>";
@@ -166,7 +166,7 @@ class TestController extends Controller
     }
 
     /**
-        *处理POST请求的接口(x-www-form-urlencoded传参)
+        *处理curl---POST请求的接口(x-www-form-urlencoded传参)
      */
     public function post2(){
         echo "<hr>";
@@ -177,7 +177,7 @@ class TestController extends Controller
     }
 
     /**
-        *处理POST请求的接口(raw传参--发送json字符串，发送XML字符串)
+        *处理curl---POST请求的接口(raw传参--发送json字符串，发送XML字符串)
      */
     public function post3(){
         echo "<hr>";
@@ -192,7 +192,7 @@ class TestController extends Controller
     }
 
     /**
-        *处理POST请求的接口(上传文件)
+        *处理curl---POST请求的接口(上传文件)
      */
     public function testUpload(){
         echo "<hr>";
