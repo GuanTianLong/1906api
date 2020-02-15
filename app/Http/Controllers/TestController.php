@@ -229,7 +229,7 @@ class TestController extends Controller
     }
 
     /**
-        *处理Guzzle请求的接口传过来的数据(POST方式------>文件上传)
+        *处理Guzzle请求的接口传过来的数据(POST方式--->文件上传)
      */
     public function guzzleUpload(){
         echo "<hr>";
