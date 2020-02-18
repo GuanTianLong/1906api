@@ -20,8 +20,38 @@ class TestController extends Controller
         echo 'value:'.$value;
     }
 
-    public function test001(){
-        echo "hello word";
+    public function redis001(Request $request){
+
+        //设置键
+        $goods_key = 'zhangsan';
+
+        //设置最大访问数量为100
+        $number = 100;
+
+        //检查某个键是否存在
+        $check = Redis::exists($goods_key);
+
+        //每次访问量+1
+        $num = Redis::incr($goods_key);
+
+        $count = Redis::get($goods_key);
+        //echo $count;
+
+        $redis_time = Redis::expire($goods_key,60);
+        if($count>$number&&$redis_time){
+            //限制时间为60秒
+            echo "超过了限制时间";
+        }else{
+            echo "服务器繁忙";
+        }
+
+        $count = Redis::get($goods_key);
+
+        echo $count;
+        //echo $count;
+        //限制访问次数不大于10次
+        //$limit = 10;
+
     }
 
     /**
@@ -241,5 +271,29 @@ class TestController extends Controller
         echo "我是API的结束";
         echo "<hr>";
     }
+
+    /**
+        *$_SERVER
+        * 获取当前完整的URL地址
+     */
+    public function getUrl(){
+        //协议(Http,Https)
+        $cheme = $_SERVER['REQUEST_SCHEME'];
+
+        //域名
+        $host = $_SERVER['HTTP_HOST'];
+
+        //请求URI
+        $uri = $_SERVER['REQUEST_URI'];
+
+        //拼完整的URL
+        $url = $cheme .'://'.$host.$uri;
+
+        echo "当前URL：".$url;echo "<hr>";
+
+        echo "<pre>";print_r($_SERVER);echo "</pre>";
+    }
+
+
 
 }

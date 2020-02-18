@@ -24,7 +24,7 @@ Route::get('/phpinfo', function () {
 /**测试路由分组*/
 Route::prefix('/test')->group(function () {
     Route::get('/redis','TestController@testRedis');
-    Route::get('/test001','TestController@test001');
+    Route::get('/redis001','TestController@redis001');
     //使用file_get_contents  发起GET请求
     Route::get('/wx/token','TestController@getAccessToken');
     //使用curl发起GET请求
@@ -43,6 +43,8 @@ Route::prefix('/test')->group(function () {
     Route::post('/post3','TestController@post3');
     //处理POST请求的接口(上传文件)
     Route::post('/testUpload','TestController@testUpload');
+    //$_SERVER
+    Route::get('/getUrl','TestController@getUrl');
 
 });
 
@@ -63,4 +65,14 @@ Route::prefix('/api')->group(function(){
     Route::get('/user/info','Api\UserController@userInfo');
     //用户注册
     Route::post('/user/register','Api\UserController@register');
+});
+
+/**商品路由分组*/
+Route::prefix('/goods')->group(function(){
+    //商品详情页
+    Route::get('/particular','Goods\GoodsController@particular');
+    //商品缓存
+    Route::get('/detial','Goods\GoodsController@detial');
+    //商品缓存
+    Route::get('/goods','Goods\GoodsController@goods');
 });
