@@ -73,27 +73,5 @@ class GoodsController extends Controller
         }
     }
 
-    /**
-        *商品页的访问量
-     */
-    public function goods(){
-        $goodsInfo=GoodsStatisticModel::orderBy('id', 'desc')->limit(10)->get()->toArray();
-        //dd($goodsInfo);
-        $datanumber=count($goodsInfo);
-        //dd($datanumber);
-        if($datanumber>=10){
-            //dd($goodsInfo);
-            $datafirst=$goodsInfo[count($goodsInfo)-1];
-            //dd($datafirst);
-            $time=time()-strtotime($datafirst['created_at']);
-            //dump($time);
-            if($time<28860){
-                //dd($time);
-                echo "1分钟内访问不能大于10次";die;
-            }
-
-        }
-
-    }
 
 }

@@ -73,6 +73,4 @@ Route::prefix('/goods')->group(function(){
     Route::get('/particular','Goods\GoodsController@particular');
     //商品缓存
     Route::get('/detial','Goods\GoodsController@detial');
-    //商品缓存
-    Route::get('/goods','Goods\GoodsController@goods');
 });
