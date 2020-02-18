@@ -9,7 +9,9 @@ use GuzzleHttp\Client;
 class TestController extends Controller
 {
 
-    /**测试Redis*/
+    /**
+        * 测试Redis
+     */
     public function testRedis(){
         $key = '1906';
         $val = time();
@@ -20,37 +22,49 @@ class TestController extends Controller
         echo 'value:'.$value;
     }
 
-    public function redis001(Request $request){
+    /**
+        *Redis计数防刷
+     */
+    public function redisCount(Request $request){
+        //通过获取客户端UA来识别用户
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        echo "当前客户端UA：".$ua;echo "<br>";
 
-        //设置键
-        $goods_key = 'zhangsan';
+        //将获取到的UA转化为md格式
+        $md_ua = md5($ua);
+        echo "转化后的UA(md5)：".$md_ua;echo "<br>";
 
-        //设置最大访问数量为100
-        $number = 100;
+        //截取UA(md5)中的5位(从第3位开始)
+        $sub_ua = substr($md_ua,3,5);
+        echo "截取后的UA：".$sub_ua;echo "<hr>";
 
-        //检查某个键是否存在
-        $check = Redis::exists($goods_key);
+        //接口访问限制次数
+        $maxCount = env('API_ACCESS_COUNT');
+        echo "限制访问次数：".$maxCount;echo "<br>";
 
-        //每次访问量+1
-        $num = Redis::incr($goods_key);
+        //判断访问次数是否已达上限(将截取后的UA拼上$key)
+        $key = $sub_ua.'redisCount';
+        echo "拼接后的key：".$key;echo "<br>";
 
-        $count = Redis::get($goods_key);
-        //echo $count;
+        //取出现有访问次数
+        $number = Redis::get($key);
+        echo "现有访问次数：".$number;echo "<br>";
 
-        $redis_time = Redis::expire($goods_key,60);
-        if($count>$number&&$redis_time){
-            //限制时间为60秒
-            echo "超过了限制时间";
-        }else{
-            echo "服务器繁忙";
+        //判断现有访问次数是否已经超过了限制次数
+        if($number>$maxCount){
+            //接口访问超时秒数
+            $timeOut = env('API_TIMEOUT_SECOND');
+            //设置当前key的过期时间(10秒内禁止访问)
+            Redis::expire($key,$timeOut);
+
+            echo "接口访问次数受限，超过了限制次数:".$maxCount;echo "<br>";
+            echo "请您".$timeOut."秒后再来访问，谢谢！";echo "<br>";
+            die;
         }
 
-        $count = Redis::get($goods_key);
-
-        echo $count;
-        //echo $count;
-        //限制访问次数不大于10次
-        //$limit = 10;
+        //统计访问次数
+        $redisCount = Redis::incr($key);
+        echo "访问正常";
 
     }
 

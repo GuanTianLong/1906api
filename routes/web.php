@@ -23,8 +23,10 @@ Route::get('/phpinfo', function () {
 
 /**测试路由分组*/
 Route::prefix('/test')->group(function () {
+    //测试Redis
     Route::get('/redis','TestController@testRedis');
-    Route::get('/redis001','TestController@redis001');
+    //Redis计数防刷
+    Route::get('/redis/redisCount','TestController@redisCount');
     //使用file_get_contents  发起GET请求
     Route::get('/wx/token','TestController@getAccessToken');
     //使用curl发起GET请求
@@ -43,7 +45,7 @@ Route::prefix('/test')->group(function () {
     Route::post('/post3','TestController@post3');
     //处理POST请求的接口(上传文件)
     Route::post('/testUpload','TestController@testUpload');
-    //$_SERVER
+    //$_SERVER(获取当前完整的URL地址)
     Route::get('/getUrl','TestController@getUrl');
 
 });
@@ -59,13 +61,20 @@ Route::prefix('/guzzle')->group(function () {
 
 });
 
-/**API路由分组*/
-Route::prefix('/api')->group(function(){
+/**用户路由分组*/
+Route::prefix('/user')->group(function(){
     //获取用户信息
-    Route::get('/user/info','Api\UserController@userInfo');
+    Route::get('/info','Api\UserController@userInfo');
     //用户注册
-    Route::post('/user/register','Api\UserController@register');
+    Route::get('/register','Api\UserController@register');
 });
+
+/**API路由分组*/
+Route::prefix('/api')->middleware('api.filter')->group(function(){
+    //接口防刷
+    Route::get('/api001','Api\ApiController@api001');
+});
+
 
 /**商品路由分组*/
 Route::prefix('/goods')->group(function(){
