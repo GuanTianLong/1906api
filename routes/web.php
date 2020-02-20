@@ -47,6 +47,10 @@ Route::prefix('/test')->group(function () {
     Route::post('/testUpload','TestController@testUpload');
     //$_SERVER(获取当前完整的URL地址)
     Route::get('/getUrl','TestController@getUrl');
+    //数据签名(发送端)
+    Route::get('/send/signature','TestController@signature');
+    //数据签名(接收端)
+    Route::get('/receiver/signature1','TestController@signature1');
 
 });
 

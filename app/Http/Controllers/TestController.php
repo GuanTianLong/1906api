@@ -308,6 +308,49 @@ class TestController extends Controller
         echo "<pre>";print_r($_SERVER);echo "</pre>";
     }
 
+    /**
+        *数据签名(发送端)
+     */
+    public function signature(){
+        //发送端和接收端必须使用同一个签名
+        $key = '1906api';
 
+        //签名数据
+        $str = $_GET['str'];
+        echo "签名前的数据：".$str;echo "<br>";
+
+        //计算签名 md5  (原始数据+key)
+        $result = md5($str.$key);
+        echo "计算的签名：".$result;
+
+        //发送数据(原始数据+计算的签名一起发送)
+
+    }
+
+    /**
+        *数据签名(接收端)，接收数据，验证签名
+     */
+    public function signature1(){
+        //发送端和接收端必须使用同一个签名
+        $key = '1906api';
+
+        //接收到的数据
+        $data = $_GET['data'];
+
+        //接收到的签名
+        $sign = $_GET['sign'];
+
+        //验签(需要与发送端使用相同的规则)
+        $result1 = md5($data.$key);
+        echo "接收端计算的签名：".$result1;echo "<br>";
+
+        //与接收的签名对比(看是否一致)
+        if($result1 == $sign){
+            echo "验签通过，数据完整";
+        }else{
+            echo "验签失败，数据损坏";
+        }
+
+    }
 
 }
