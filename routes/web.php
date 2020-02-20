@@ -74,9 +74,12 @@ Route::prefix('/user')->group(function(){
 });
 
 /**API路由分组*/
-Route::prefix('/api')->middleware('api.filter')->group(function(){
+Route::prefix('/api')->group(function(){
     //接口防刷
     Route::get('/api001','Api\ApiController@api001');
+    //天气接口
+    Route::get('/weather','Api\ApiController@weather');
+
 });
 
 
