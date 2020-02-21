@@ -51,7 +51,12 @@ Route::prefix('/test')->group(function () {
     Route::get('/send/signature','TestController@signature');
     //数据签名(接收端)
     Route::get('/receiver/signature1','TestController@signature1');
-
+    //计算运气
+    Route::get('/luck','TestController@luck');
+    //字符串解密
+    Route::get('/decrypt','TestController@decrypt');
+    //对称加密的解密
+    Route::get('/decrypt1','TestController@decrypt1');
 });
 
 /**Guzzle路由分组*/
@@ -81,7 +86,6 @@ Route::prefix('/api')->group(function(){
     Route::get('/weather','Api\ApiController@weather');
 
 });
-
 
 /**商品路由分组*/
 Route::prefix('/goods')->group(function(){

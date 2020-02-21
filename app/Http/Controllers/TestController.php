@@ -353,4 +353,74 @@ class TestController extends Controller
 
     }
 
+    /**
+        * 计算运气
+     */
+    public function luck(){
+
+        if(empty($_GET['birth'])){
+            echo "请输入您的出生日期，程序帮您计算，今天的运气如何";die;
+        }
+
+        $birth = $_GET['birth'];
+
+        $result = ['大吉','吉','中','凶','大凶'];
+
+        $rand = $birth%5;
+
+        echo $result[$rand];
+    }
+
+    /**
+        * 字符串解密
+     */
+    public function decrypt(){
+        if(empty($_GET['str'])){
+            echo "请输入要解密的密文";
+            die;
+        }
+        $data = $_GET['str'];
+        echo "密文：".$data;echo "<br>";
+
+        //获取密文的长度
+        $length = strlen($data);
+        echo "密文的长度：".$length;echo "<hr>";
+        $new_str = '';
+        for($i=0;$i<$length;$i++){
+            echo $data[$i].'=>'.ord($data[$i]);echo "<br>";
+            $code = ord($data[$i])-1;
+            echo "解码：".'=>'.$code.'=>'.$data[$i].'=>'.chr($code);echo "<br>";
+            //将解码后的字符串进行拼接
+            $new_str.=chr($code);
+        }
+        echo "<hr>";
+        echo "原文：".$new_str;echo "<br>";
+    }
+
+    /**对称加密的解密*/
+    public function decrypt1(){
+        if(empty($_GET['data'])){
+            echo "请输入要解密的密文";
+            die;
+        }
+        $key = '1906api';
+        //加密方式
+        $method = 'AES-128-CBC';
+        //iv   必须为16个字节  (16个ascii字符)
+        $iv = 'qwertyuiop123asd';
+
+        echo "接收到的数据：";echo "<br>";
+        echo "<pre>";print_r($_GET);echo "</pre>";
+        $data = $_GET['data'];
+
+        echo "接收到的数据：".$data;echo "<br>";
+        //将接收到的数据进行base64解码
+        $base64_str = base64_decode($data);
+        echo "base64解码后的密文：".$base64_str;echo "<br>";
+
+        //解密base64编码后的密文
+        $decrypt_str = openssl_decrypt($base64_str,$method,$key,OPENSSL_RAW_DATA,$iv);
+        echo "解密base64解码后的密文：".$decrypt_str;echo "<br>";
+
+    }
 }
