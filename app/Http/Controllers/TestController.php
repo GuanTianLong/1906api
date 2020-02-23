@@ -334,9 +334,9 @@ class TestController extends Controller
         //发送端和接收端必须使用同一个签名
         $key = '1906api';
 
+        echo "<pre>";print_r($_GET);echo "</pre>";
         //接收到的数据
         $data = $_GET['data'];
-
         //接收到的签名
         $sign = $_GET['sign'];
 
@@ -397,12 +397,13 @@ class TestController extends Controller
         echo "原文：".$new_str;echo "<br>";
     }
 
-    /**对称加密的解密*/
+    /**数据对称加密的解密*/
     public function decrypt1(){
         if(empty($_GET['data'])){
             echo "请输入要解密的密文";
             die;
         }
+        //必须与加密的key相同
         $key = '1906api';
         //加密方式
         $method = 'AES-128-CBC';
@@ -423,4 +424,52 @@ class TestController extends Controller
         echo "解密base64解码后的密文：".$decrypt_str;echo "<br>";
 
     }
+
+    /**数据对称加密的解密+数据签名*/
+    public function decrypt2(){
+
+        //必须与加密的key相同
+        $sign_key = '1906';
+
+        //接收到的数据
+        $data = $_GET['datas'];
+
+        //接收到的签名
+        $sign = $_GET['sign'];
+
+        //验签(需要与发送端使用相同的规则)
+        $result1 = md5($data.$sign_key);
+        echo "接收端计算的签名：".$result1;echo "<br>";
+
+        //与接收的签名对比(看是否一致)
+        if($result1 == $sign){
+            echo "验签通过，数据完整";
+        }else{
+            echo "验签失败，数据损坏";
+        }
+
+        //必须与解密的key相同
+        $key = '1906api';
+
+        //加密方式
+        $method = 'AES-128-CBC';
+        //iv   必须为16个字节  (16个ascii字符)
+        $iv = '123456789qwertyu';
+
+        echo "接收到的数据：";echo "<br>";
+        echo "<pre>";print_r($_GET);echo "</pre>";
+        $data = $_GET['data'];
+
+        echo "接收到的数据：".$data;echo "<br>";
+        //将接收到的数据进行base64解码
+        $base64_str = base64_decode($data);
+        echo "base64解码后的密文：".$base64_str;echo "<br>";
+
+        //解密base64编码后的密文
+        $decrypt_str = openssl_decrypt($base64_str,$method,$key,OPENSSL_RAW_DATA,$iv);
+        echo "解密base64解码后的密文：".$decrypt_str;echo "<br>";
+
+    }
+
+
 }

@@ -55,8 +55,10 @@ Route::prefix('/test')->group(function () {
     Route::get('/luck','TestController@luck');
     //字符串解密
     Route::get('/decrypt','TestController@decrypt');
-    //对称加密的解密
+    //数据对称加密的解密
     Route::get('/decrypt1','TestController@decrypt1');
+    //数据对称加密的解密+数据签名
+    Route::get('/decrypt2','TestController@decrypt2');
 });
 
 /**Guzzle路由分组*/
