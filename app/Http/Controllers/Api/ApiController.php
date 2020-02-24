@@ -28,7 +28,7 @@ class ApiController extends Controller
         //城市名称
         $location = $_GET['location'];
 
-        $url = 'https://free-api.heweather.net/s6/weather?location='.$location.'&key=968ae0c640ea4a24a0a1334962b3e67b';
+        $url = 'https://free-api.heweather.net/s6/weather?location='.$location.'&keys=968ae0c640ea4a24a0a1334962b3e67b';
         $data = file_get_contents($url);
         //转化数据类型(将json数据类型转化为数组)
         $arr = json_decode($data,true);

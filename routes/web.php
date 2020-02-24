@@ -59,6 +59,8 @@ Route::prefix('/test')->group(function () {
     Route::get('/decrypt1','TestController@decrypt1');
     //数据对称加密的解密+数据签名
     Route::get('/decrypt2','TestController@decrypt2');
+    //非对称加密,接收加密数据(使用私钥解密)
+    Route::get('/rsa/decrypt','TestController@rsaDecrypt');
 });
 
 /**Guzzle路由分组*/

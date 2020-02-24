@@ -42,7 +42,7 @@ class TestController extends Controller
         $maxCount = env('API_ACCESS_COUNT');
         echo "限制访问次数：".$maxCount;echo "<br>";
 
-        //判断访问次数是否已达上限(将截取后的UA拼上$key)
+        //判断访问次数是否已达上限(将截取后的UA拼上$keys)
         $key = $sub_ua.'redisCount';
         echo "拼接后的key：".$key;echo "<br>";
 
@@ -135,7 +135,7 @@ class TestController extends Controller
                 [
                     "type" => "click",
                     "name" => "curlPost",
-                    "key" => "curlPost001"
+                    "keys" => "curlPost001"
                 ]
             ]
         ];
@@ -319,7 +319,7 @@ class TestController extends Controller
         $str = $_GET['str'];
         echo "签名前的数据：".$str;echo "<br>";
 
-        //计算签名 md5  (原始数据+key)
+        //计算签名 md5  (原始数据+keys)
         $result = md5($str.$key);
         echo "计算的签名：".$result;
 
@@ -397,7 +397,9 @@ class TestController extends Controller
         echo "原文：".$new_str;echo "<br>";
     }
 
-    /**数据对称加密的解密*/
+    /**
+        * 数据对称加密的解密
+     */
     public function decrypt1(){
         if(empty($_GET['data'])){
             echo "请输入要解密的密文";
@@ -425,9 +427,10 @@ class TestController extends Controller
 
     }
 
-    /**数据对称加密的解密+数据签名*/
+    /**
+        * 数据对称加密的解密+数据签名
+     */
     public function decrypt2(){
-
         //必须与加密的key相同
         $sign_key = '1906';
 
@@ -468,6 +471,36 @@ class TestController extends Controller
         //解密base64编码后的密文
         $decrypt_str = openssl_decrypt($base64_str,$method,$key,OPENSSL_RAW_DATA,$iv);
         echo "解密base64解码后的密文：".$decrypt_str;echo "<br>";
+
+    }
+
+    /**
+        *非对称加密,接收加密数据(使用私钥解密)
+     */
+    public function rsaDecrypt(){
+        if(empty($_GET['data'])){
+            echo "请输入要解密的数据";
+            die;
+        }
+
+        echo "<hr>";
+        echo "接收到的数据：";echo "<br>";
+        echo "<pre>";print_r($_GET);echo "</pre>";
+
+        $data = $_GET['data'];
+        echo "接收到的数据：".$data;echo "<br>";
+
+        //将接收到的数据进行base64解码
+        $base64_data = base64_decode($data);
+        echo "base64解码后的数据：".$base64_data;echo "<br>";
+
+        //生成私钥
+        $priv_key = file_get_contents(storage_path('keys/priv_a.key'));
+        echo "生成的私钥：".$priv_key;echo "<br>";
+
+        //将base64解码后的数据进行解密
+        openssl_private_decrypt($base64_data,$dec_data,$priv_key);
+        echo "解密后的数据：".$dec_data;echo "<br>";
 
     }
 
