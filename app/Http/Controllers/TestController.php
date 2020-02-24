@@ -521,5 +521,39 @@ class TestController extends Controller
 
     }
 
+    /**
+        *使用非对称加密验证签名
+     */
+    public function rsaVerify(){
+        echo "<hr>";
+        echo "接收到的数据：";echo "<br>";
+        echo "<pre>";print_r($_GET);echo "</pre>";echo "<br>";
+
+        $data = $_GET['data'];
+        $sign = $_GET['sign'];
+        echo "接收的签名:".$sign;echo "<br>";
+
+            //将接收的数据中的签名进行base64解密
+        $base64_sign_str = base64_decode($sign);
+        echo "base64解密后的数据：".$base64_sign_str;echo "<br>";
+
+            //根据公钥生成key
+        $pub_key_id = openssl_pkey_get_public("file://".storage_path('keys/pub_b.key'));
+        echo "生成的key：".$pub_key_id;echo "<hr>";
+
+            //验证签名
+        $result = openssl_verify($data,$base64_sign_str,$pub_key_id,OPENSSL_ALGO_SHA256);
+        if($result == 1){
+            echo "验签通过，数据完整";
+        }else if($result == 0){
+            echo "验签失败，数据损坏";
+        }else{
+            echo "ugly, error checking signature";
+        }
+        //var_dump($result);
+
+    }
+
+
 
 }
