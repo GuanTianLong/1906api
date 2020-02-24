@@ -483,24 +483,41 @@ class TestController extends Controller
             die;
         }
 
-        echo "<hr>";
-        echo "接收到的数据：";echo "<br>";
-        echo "<pre>";print_r($_GET);echo "</pre>";
+        //echo "<hr>";
+        //echo "接收到的数据：";echo "<br>";
+        //echo "<pre>";print_r($_GET);echo "</pre>";
 
         $data = $_GET['data'];
-        echo "接收到的数据：".$data;echo "<br>";
+        //echo "接收到的数据：".$data;echo "<br>";
 
         //将接收到的数据进行base64解码
         $base64_data = base64_decode($data);
-        echo "base64解码后的数据：".$base64_data;echo "<br>";
+        //echo "base64解码后的数据：".$base64_data;echo "<br>";
 
         //生成私钥
         $priv_key = file_get_contents(storage_path('keys/priv_a.key'));
-        echo "生成的私钥：".$priv_key;echo "<br>";
+        //echo "生成的私钥：".$priv_key;echo "<br>";
 
         //将base64解码后的数据进行解密
         openssl_private_decrypt($base64_data,$dec_data,$priv_key);
-        echo "解密后的数据：".$dec_data;echo "<br>";
+        //echo "解密后的数据：".$dec_data;echo "<hr>";
+
+        //响应数据回去
+        $str = 'Hello 1906test';
+
+        //生成公钥
+        $pub_key = file_get_contents(storage_path('keys/pub_b.key'));
+        //echo "生成的公钥：".$pub_key;echo "<br>";
+
+        //加密响应数据
+        openssl_public_encrypt($str,$enc_str,$pub_key);
+        //echo "响应的加密数据：".$enc_str;echo "<br>";
+
+        //将加密后的数据进行base64编码
+        $base64_str = base64_encode($enc_str);
+        //echo "base64编码后的数据：".$base64_str;echo "<br>";
+
+        return $base64_str;
 
     }
 
