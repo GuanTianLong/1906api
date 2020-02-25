@@ -101,3 +101,9 @@ Route::prefix('/goods')->group(function(){
     //商品缓存
     Route::get('/detial','Goods\GoodsController@detial');
 });
+
+/**阿里云路由分组*/
+Route::prefix('/alipay')->group(function(){
+    //支付宝支付(沙箱环境)
+    Route::get('/test','AlipayController@payTest');
+});
