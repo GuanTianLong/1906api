@@ -192,13 +192,6 @@ class TestController extends Controller
     }
 
     /**
-        *处理GET请求的接口
-     */
-    public function get1(){
-        echo "<pre>";print_r($_GET);echo "</pre>";
-    }
-
-    /**
         *处理curl---POST请求的接口(form-data传参)
      */
     public function post1(){

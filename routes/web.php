@@ -35,8 +35,6 @@ Route::prefix('/test')->group(function () {
     Route::get('/curl/curlPost','TestController@curlPost');
     //使用guzzle发起GET请求
     Route::get('/guzzle/guzzleGet','TestController@guzzleGet');
-    //处理GET请求的接口
-    Route::get('/get1','TestController@get1');
     //处理POST请求的接口(form-data传参)
     Route::post('/post1','TestController@post1');
     //处理POST请求的接口(x-www-form-urlencoded传参)
